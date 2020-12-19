@@ -8,7 +8,7 @@ using VegFoods.Data.Repositories;
 
 namespace VegFoods.Data.UnitOfWork
 {
-    class UnitOfWork : IUnitOfWork
+   public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _context;
 

@@ -11,7 +11,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using VegFoods.Core.IRepositories;
+using VegFoods.Core.Services;
+using VegFoods.Core;
 using VegFoods.Data;
+using VegFoods.Data.UnitOfWork;
+using VegFoods.Services.Services;
+using VegFoods.Data.Repositories;
+using VegFoods.Core.UnitOfWork;
+using AutoMapper;
 
 namespace VegFoods.Api
 {
@@ -34,10 +42,29 @@ namespace VegFoods.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllers();
             services.AddMvc();
-            services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
-            
+            services.AddScoped<DbContext, AppDbContext>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IRecipeService, RecipeService>();
+            services.AddScoped<IingredientService, IngredientService > ();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddDbContext<AppDbContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("DevConnection").ToString(), o =>
+                {
+                    o.MigrationsAssembly("VegFoods.Data");
+                });
+
+            });
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
         }
 
