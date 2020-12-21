@@ -20,9 +20,15 @@ namespace VegFoods.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Recipe>> GetAllWithCategoryByCategoryIdAsync(int CategoryId)
+        public async Task<Recipe> GetWithIngreById(int Recipeid)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.Recipes.GetWithIngreById(Recipeid);
+        }
+
+
+        public async Task<IEnumerable<Recipe>> GetAllWithIngredientsAsync()
+        {
+            return await _unitOfWork.Recipes.GetAllWithIngredientsAsync();
         }
     }
 }

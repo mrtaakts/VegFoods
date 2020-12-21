@@ -8,7 +8,8 @@ namespace VegFoods.Core.IRepositories
 {
     public interface ICategoryRepository: IRepository<Category>
     {
-        Task<IEnumerable<Recipe>> GetAllWithRecipesAsync(int CategoryID);
+       
+        Task<Category> GetAllWithRecipesAsync(int CategoryID);
        
     }
 }

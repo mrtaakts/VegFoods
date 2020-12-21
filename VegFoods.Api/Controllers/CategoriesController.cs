@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VegFoods.Api.DTO;
 using VegFoods.Core.Models;
 using VegFoods.Core.Services;
+
 
 namespace VegFoods.Api.Controllers
 {
@@ -26,7 +24,7 @@ namespace VegFoods.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            // DTO MAPPER OKANA SOR
+            
             var categories = await _categoryService.GetAllAsync();
            
             return Ok(_mapper.Map<IEnumerable<CategoryDTO>>(categories));
@@ -35,7 +33,7 @@ namespace VegFoods.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            // DTO MAPPER OKANA SOR
+           
             CategoryDTO categoryDTO;
             var category = await _categoryService.GetByIdAsync(id);
             return Ok(_mapper.Map<CategoryDTO>(category));
@@ -45,7 +43,8 @@ namespace VegFoods.Api.Controllers
         public async Task<IActionResult> Save(CategoryDTO categoryDTO)
         {
             var newcategory = await _categoryService.AddAsync(_mapper.Map<Category>(categoryDTO));
-            return Ok("Kategori Başarıyla Eklendi");
+
+            return Created(string.Empty, _mapper.Map<CategoryDTO>(newcategory));
         }
 
         [HttpDelete("{id}")]
@@ -53,10 +52,11 @@ namespace VegFoods.Api.Controllers
         {
             var category = _categoryService.GetByIdAsync(id).Result;
             _categoryService.Remove(category);
-            return NoContent();
+            return Ok("Kategori Başarıyla Silindi");
 
         }
 
+        [HttpGet("{id}/recipes")]
         public async Task<IActionResult> GetAllWithRecipesAsync(int id)
         {
             var category = await _categoryService.GetAllWithRecipesAsync(id);

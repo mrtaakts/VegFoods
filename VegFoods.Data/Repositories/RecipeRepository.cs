@@ -17,18 +17,20 @@ namespace VegFoods.Data.Repositories
             _context = dbContext;
         }
 
-        public async Task<IEnumerable<Recipe>> GetAllWithCategoryAsync()
+        public async Task<IEnumerable<Recipe>> GetAllWithIngredientsAsync()
         {
-            return await _context.Recipes.Include(a => a.Category).ToListAsync();
+            return await _context.Recipes.Include(a => a.Ingredients).ToListAsync();
         }
 
-        public async Task<IEnumerable<Recipe>> GetAllWithCategoryByCategoryIdAsync(int CategoryId)
-        {
-            return await _context.Recipes.Include(a => a.Category).Where(x => x.CategoryId == CategoryId).ToListAsync();
-        }
+
         public async Task<Recipe> GetByIdAsync(int id)
         {
-            return await _context.Recipes.FindAsync(id);
+            return await _context.Recipes.Include(a => a.Ingredients).SingleOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<Recipe> GetWithIngreById(int Recipeid)
+        {
+            return await _context.Recipes.Include(a => a.Ingredients).SingleOrDefaultAsync(a => a.Id == Recipeid);
         }
 
         Task<IEnumerable<Recipe>> IRecipeRepository.GetAllWithCategoryAsync()
@@ -36,14 +38,8 @@ namespace VegFoods.Data.Repositories
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<Recipe>> IRecipeRepository.GetAllWithCategoryByCategoryIdAsync(int CategoryId)
-        {
-            throw new NotImplementedException();
-        }
+      
 
-        Task<Recipe> IRecipeRepository.GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

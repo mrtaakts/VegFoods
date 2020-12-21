@@ -16,12 +16,6 @@ namespace VegFoods.Data.UnitOfWork
         private RecipeRepository _recipeRepository;
         private IngredientRepository _ıngredientRepository;
 
-        
-
-        public UnitOfWork(AppDbContext appDbContext)
-        {
-            _context = appDbContext;
-        }
 
         public ICategoryRepository Categories => _categoryRepository = _categoryRepository ?? new CategoryRepository(_context);
 
@@ -29,8 +23,12 @@ namespace VegFoods.Data.UnitOfWork
 
         public IingredientRepository Ingredients => _ıngredientRepository = _ıngredientRepository ?? new IngredientRepository(_context);
 
-       // public ICategoryRepository categories => _CategoryRepository = _CategoryRepository ?? new CategoryRepository(_context);
+        // public ICategoryRepository categories => _CategoryRepository = _CategoryRepository ?? new CategoryRepository(_context);
 
+        public UnitOfWork(AppDbContext appDbContext)
+        {
+            _context = appDbContext;
+        }
         public void Commit()
         {
             _context.SaveChanges();

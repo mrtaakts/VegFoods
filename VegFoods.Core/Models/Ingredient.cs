@@ -8,9 +8,6 @@ namespace VegFoods.Core.Models
     public class Ingredient
     {
         public int Id { get; set; }
-
-        public int Piece { get; set; }
-
         public string Name { get; set; }
 
         [NotMapped]

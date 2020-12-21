@@ -9,8 +9,6 @@ namespace VegFoods.Api.DTO
     {
         public int Id { get; set; }
 
-        public int Piece { get; set; }
-
         public string Name { get; set; }
 
     }

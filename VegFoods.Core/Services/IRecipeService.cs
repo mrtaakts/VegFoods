@@ -10,7 +10,7 @@ namespace VegFoods.Core.Services
     {
         // TODO: SERVİSLER DÜZENLENECEK
         Task<IEnumerable<Recipe>> GetAllWithCategoryAsync();
-        Task<Recipe> GetByIdAsync(int id);
-        Task<IEnumerable<Recipe>> GetAllWithCategoryByCategoryIdAsync(int CategoryId);
+        Task<IEnumerable<Recipe>> GetAllWithIngredientsAsync();
+        Task<Recipe> GetWithIngreById(int Recipeid);
     }
 }

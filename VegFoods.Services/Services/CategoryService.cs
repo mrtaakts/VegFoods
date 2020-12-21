@@ -17,9 +17,8 @@ namespace VegFoods.Services.Services
 
         }
 
-        public async Task<IEnumerable<Recipe>> GetAllWithRecipesAsync(int CategoryID)
+        public async Task<Category> GetAllWithRecipesAsync(int CategoryID)
         {
-            return await _unitOfWork.Categories.GetAllWithRecipesAsync(CategoryID);
-        }
+            return await _unitOfWork.Categories.GetAllWithRecipesAsync(CategoryID);        }
     }
 }

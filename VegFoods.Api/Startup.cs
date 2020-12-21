@@ -1,28 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using VegFoods.Core.IRepositories;
 using VegFoods.Core.Services;
-using VegFoods.Core;
 using VegFoods.Data;
 using VegFoods.Data.UnitOfWork;
 using VegFoods.Services.Services;
 using VegFoods.Data.Repositories;
 using VegFoods.Core.UnitOfWork;
 using AutoMapper;
+using Microsoft.OpenApi.Models;
 
 namespace VegFoods.Api
 {
+
 
     // Identity login logout 
     // CRUD food category vs.
@@ -49,8 +44,10 @@ namespace VegFoods.Api
             services.AddScoped<DbContext, AppDbContext>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IRecipeService, RecipeService>();
-            services.AddScoped<IingredientService, IngredientService > ();
+            services.AddScoped<IingredientService, IngredientService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            ConfigureSwagger(services);
 
             services.AddDbContext<AppDbContext>(opt =>
             {
@@ -68,13 +65,32 @@ namespace VegFoods.Api
 
         }
 
+        private static void ConfigureSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "VegFoods API", Version = "v1" });
+            });
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API Version 1");
+                c.RoutePrefix = "swagger";
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+         
+
 
             app.UseHttpsRedirection();
 

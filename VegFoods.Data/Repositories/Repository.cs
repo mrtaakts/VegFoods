@@ -12,17 +12,17 @@ namespace VegFoods.Data.Repositories
     public class Repository<T> : IRepository<T> where T : class
     {
         protected readonly DbContext _context;
-        private readonly DbSet<T> _dbSet;
+       
 
-        public Repository(DbContext context)
+        public Repository(AppDbContext context)
         {
            _context = context;
-           _dbSet = context.Set<T>();
+          
         }
 
         public async Task AddAsync(T entity)
         {
-            // context.Category.Add(entity);
+            // await _dbSet.AddAsync(entity);
             await _context.Set<T>().AddAsync(entity);
         }
 

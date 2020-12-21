@@ -8,6 +8,6 @@ namespace VegFoods.Core.Services
 {
     public interface ICategoryService :IService<Category>
     {
-        Task<IEnumerable<Recipe>> GetAllWithRecipesAsync(int CategoryID);
+        Task<Category> GetAllWithRecipesAsync(int CategoryID);
     }
 }

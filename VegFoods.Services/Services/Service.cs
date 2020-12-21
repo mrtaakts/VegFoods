@@ -31,7 +31,6 @@ namespace VegFoods.Services.Services
         public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate)
         {
             return await _repository.Find(predicate);
-
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -56,9 +55,6 @@ namespace VegFoods.Services.Services
             _unitOfWork.Commit();
         }
 
-        IEnumerable<T> IService<T>.Find(Expression<Func<T, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }
