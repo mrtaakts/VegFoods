@@ -62,5 +62,14 @@ namespace VegFoods.Api.Controllers
             var category = await _categoryService.GetAllWithRecipesAsync(id);
             return Ok(_mapper.Map<CategoryWithRecipesDTO>(category));
         }
+
+        [HttpGet("/error")]
+        public async Task<IActionResult> GetError()
+        {
+
+            var categories = await _categoryService.GetAllAsync();
+
+            return Ok(_mapper.Map<IEnumerable<CategoryDTO>>(categories));
+        }
     }
 }

@@ -14,6 +14,9 @@ using VegFoods.Data.Repositories;
 using VegFoods.Core.UnitOfWork;
 using AutoMapper;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace VegFoods.Api
 {
@@ -21,8 +24,7 @@ namespace VegFoods.Api
 
     // Identity login logout 
     // CRUD food category vs.
-    // UnitOfWork açýkla
-    // Dockerize , heroku
+    // Dockerize, heroku
     // Generic repo
     // azure 
     public class Startup
@@ -37,6 +39,25 @@ namespace VegFoods.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // Cross Origin 
+            services.AddCors(options =>
+            options.AddPolicy("myclient", builder =>
+
+            builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader()));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+                opt.RequireHttpsMetadata = false;
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidAudience = "http://localhost:3000",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mertmertmertaktas1187")),
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true
+                }; 
+            });
+
+
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllers();
@@ -76,12 +97,15 @@ namespace VegFoods.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // Cross Origin 
+            app.UseCors("myclient");
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API Version 1");
-                c.RoutePrefix = "swagger";
+                c.RoutePrefix = "api/swagger";
             });
 
             if (env.IsDevelopment())
