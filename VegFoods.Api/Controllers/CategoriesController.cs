@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VegFoods.Api.DTO;
 using VegFoods.Core.Models;
 using VegFoods.Core.Services;
-
+using VegFoods.Core.StringInfos;
 
 namespace VegFoods.Api.Controllers
 {
@@ -22,6 +23,7 @@ namespace VegFoods.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = RoleInfo.Admin)]
         public async Task<IActionResult> GetAll()
         {
             
@@ -63,13 +65,6 @@ namespace VegFoods.Api.Controllers
             return Ok(_mapper.Map<CategoryWithRecipesDTO>(category));
         }
 
-        [HttpGet("/error")]
-        public async Task<IActionResult> GetError()
-        {
-
-            var categories = await _categoryService.GetAllAsync();
-
-            return Ok(_mapper.Map<IEnumerable<CategoryDTO>>(categories));
-        }
+  
     }
 }

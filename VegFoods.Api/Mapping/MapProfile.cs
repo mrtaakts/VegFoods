@@ -23,6 +23,8 @@ namespace VegFoods.Api.Mapping
 
             CreateMap<Ingredient, IngredientDTO>().ReverseMap();
 
+            CreateMap<UserAddDTO, User>();
+            CreateMap<User, UserAddDTO>();
         }
 
     }

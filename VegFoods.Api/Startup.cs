@@ -17,6 +17,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using VegFoods.Core.StringInfos;
+using System;
+using VegFoods.Api.Initialize;
 
 namespace VegFoods.Api
 {
@@ -44,17 +47,23 @@ namespace VegFoods.Api
             services.AddCors(options =>
             options.AddPolicy("myclient", builder =>
 
-            builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader()));
+            builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader()
+                           ));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
                 opt.RequireHttpsMetadata = false;
                 opt.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidAudience = "http://localhost:3000",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mertmertmertaktas1187")),
+                    ValidIssuer = JwtInfo.Issuer,
+                    ValidAudience = JwtInfo.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtInfo.SecurityKey)),
                     ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true
-                }; 
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+                    RequireExpirationTime = true
+                };
             });
 
 
@@ -67,6 +76,10 @@ namespace VegFoods.Api
             services.AddScoped<IRecipeService, RecipeService>();
             services.AddScoped<IingredientService, IngredientService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRoleService, UserRoleService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IJwtService, JwtService>();
 
             ConfigureSwagger(services);
 
@@ -95,7 +108,8 @@ namespace VegFoods.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            IUserService userService, IUserRoleService userRoleService, IRoleService roleService)
         {
             // Cross Origin 
             app.UseCors("myclient");
@@ -113,12 +127,13 @@ namespace VegFoods.Api
                 app.UseDeveloperExceptionPage();
             }
 
-         
 
+            JwtIdentityInitializer.Seed(userService, userRoleService, roleService).Wait();
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

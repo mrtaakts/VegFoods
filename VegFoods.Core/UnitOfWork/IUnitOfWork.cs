@@ -13,6 +13,10 @@ namespace VegFoods.Core.UnitOfWork
 
         IingredientRepository Ingredients { get; }
 
+        IUserRepository Users { get; }
+        IUserRoleRepository UserRoles { get; }
+        IRoleRepository Roles { get; }
+
         Task CommitAsync();
 
         void Commit();

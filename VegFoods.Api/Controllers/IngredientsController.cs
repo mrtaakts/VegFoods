@@ -36,10 +36,13 @@ namespace VegFoods.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-
-            var ingredient = _ingredientService.GetByIdAsync(id);
             
-            return Ok(_mapper.Map<IngredientDTO>(ingredient));
+                var ingredient = await _ingredientService.GetByIdAsync(id);
+
+                return Ok(_mapper.Map<IngredientDTO>(ingredient));
+            
+                   
+           
          
         }
 
@@ -59,6 +62,8 @@ namespace VegFoods.Api.Controllers
             return Ok("Kategori Başarıyla Silindi");
 
         }
+
+     
 
 
     }
