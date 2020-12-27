@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace VegFoods.Api.DTO
 {
-    public class RecipeWithIngredientsDTO : RecipeDTO
+    public class RecipeIngredientDTO
     {
-
+        public int RecipeId { get; set; }
+        public int IngredientId { get; set; }
     }
 }

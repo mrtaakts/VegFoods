@@ -14,11 +14,13 @@ namespace VegFoods.Api.Controllers
     {
         private readonly IRecipeService _recipeService;
         private readonly IMapper _mapper;
+        private readonly IRecipeIngredientService _recipeIngredientService;
 
-        public RecipesController(IRecipeService recipeService, IMapper mapper)
+        public RecipesController(IRecipeService recipeService, IMapper mapper, IRecipeIngredientService recipeIngredientService )
         {
             _mapper = mapper;
             _recipeService = recipeService;
+            _recipeIngredientService = recipeIngredientService;
 
         }
 
@@ -34,12 +36,12 @@ namespace VegFoods.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWithIngreById(int id)
         {
+
+             var recipe = await _recipeService.GetWithIngreById(id);
+
+             return Ok(_mapper.Map<RecipeWithIngredientsDTO>(recipe));
+
             
-            var recipe = await _recipeService.GetWithIngreById(id);
-
-            return Ok(_mapper.Map<RecipeWithIngredientsDTO>(recipe));
-
-
         }
 
         // [HttpGet("{id}")]
@@ -57,9 +59,22 @@ namespace VegFoods.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(RecipeDTO recipeDTO)
         {
-            var newrecipe = await _recipeService.AddAsync(_mapper.Map<Recipe>(recipeDTO));
+             var newrecipe = await _recipeService.AddAsync(_mapper.Map<Recipe>(recipeDTO));
+
+            foreach(var item in recipeDTO.recipeIngredient)
+            {
+               
+                RecipeIngredient recipeIngredient = new RecipeIngredient();
+                recipeIngredient.IngredientId = item.IngredientId;
+                recipeIngredient.RecipeId = newrecipe.Id;
+
+
+                await _recipeIngredientService.AddAsync(recipeIngredient);
+
+            }
 
             return Created(string.Empty, _mapper.Map<RecipeDTO>(newrecipe));
+            
         }
 
         [HttpDelete("{id}")]

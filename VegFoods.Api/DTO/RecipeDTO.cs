@@ -15,5 +15,6 @@ namespace VegFoods.Api.DTO
 
         public string Description { get; set; }
 
+        public virtual List<RecipeIngredientDTO> recipeIngredient {get;set;}
     }
 }

@@ -27,12 +27,29 @@ namespace VegFoods.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
-            
+            modelBuilder.Entity<RecipeIngredient>()
+        .HasKey(ri => new { ri.RecipeId, ri.IngredientId});
+            modelBuilder.Entity<RecipeIngredient>()
+                .HasOne(ri => ri.Recipe)
+                .WithMany(i => i.RecipeIngredients)
+                .HasForeignKey(ri => ri.RecipeId);
+            modelBuilder.Entity<RecipeIngredient>()
+                .HasOne(ri => ri.Ingredient)
+                .WithMany(i => i.RecipeIngredients)
+                .HasForeignKey(ri => ri.IngredientId);
+
+
+            modelBuilder.Entity<Category>()
+            .HasMany(p => p.Recipes)
+            .WithOne(t => t.Category)
+            .OnDelete(DeleteBehavior.SetNull);
+
+
         }
 
 

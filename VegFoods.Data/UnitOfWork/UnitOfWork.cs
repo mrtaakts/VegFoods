@@ -18,6 +18,7 @@ namespace VegFoods.Data.UnitOfWork
         private UserRepository _userRepository;
         private UserRoleRepository _userRoleRepository;
         private RoleRepository _roleRepository;
+        private RecipeIngredientRepository _recipeIngredientRepository;
 
 
         public ICategoryRepository Categories => _categoryRepository = _categoryRepository ?? new CategoryRepository(_context);
@@ -31,6 +32,8 @@ namespace VegFoods.Data.UnitOfWork
         public IUserRepository Users=> _userRepository = _userRepository ?? new UserRepository(_context);
 
         public IUserRoleRepository UserRoles => _userRoleRepository = _userRoleRepository ?? new UserRoleRepository(_context);
+
+        public IRecipeIngredientRepository RecipeIngredient => _recipeIngredientRepository = _recipeIngredientRepository ?? new RecipeIngredientRepository(_context);
 
         // public ICategoryRepository categories => _CategoryRepository = _CategoryRepository ?? new CategoryRepository(_context);
 

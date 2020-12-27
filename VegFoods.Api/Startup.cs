@@ -20,6 +20,7 @@ using System.Text;
 using VegFoods.Core.StringInfos;
 using System;
 using VegFoods.Api.Initialize;
+using Newtonsoft.Json;
 
 namespace VegFoods.Api
 {
@@ -42,6 +43,12 @@ namespace VegFoods.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews()
+            .AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
+
 
             // Cross Origin 
             services.AddCors(options =>
@@ -69,8 +76,12 @@ namespace VegFoods.Api
 
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddControllers();
-            services.AddMvc();
+
+            services.AddMvc().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.PropertyNamingPolicy = null;
+                o.JsonSerializerOptions.DictionaryKeyPolicy = null;
+            });
             services.AddScoped<DbContext, AppDbContext>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IRecipeService, RecipeService>();
@@ -80,6 +91,7 @@ namespace VegFoods.Api
             services.AddScoped<IUserRoleService, UserRoleService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IRecipeIngredientService, RecipeIngredientService>();
 
             ConfigureSwagger(services);
 

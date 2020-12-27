@@ -10,7 +10,7 @@ namespace VegFoods.Core.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        [NotMapped]
-        public ICollection<Recipe> Recipes { get; set; }
+        
+        public virtual ICollection<RecipeIngredient> RecipeIngredients{ get; set; }
     }
 }

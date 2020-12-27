@@ -23,7 +23,7 @@ namespace VegFoods.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = RoleInfo.Admin)]
+       // [Authorize(Roles = RoleInfo.Admin)]
         public async Task<IActionResult> GetAll()
         {
             
@@ -38,7 +38,7 @@ namespace VegFoods.Api.Controllers
            
             CategoryDTO categoryDTO;
             var category = await _categoryService.GetByIdAsync(id);
-            return Ok(_mapper.Map<CategoryDTO>(category));
+            return Ok(_mapper.Map<CategoryWithRecipesDTO>(category));
         }
 
         [HttpPost]
