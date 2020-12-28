@@ -10,8 +10,8 @@ using VegFoods.Data;
 namespace VegFoods.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201226233105_deneme1")]
-    partial class deneme1
+    [Migration("20201228140738_mig1")]
+    partial class mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

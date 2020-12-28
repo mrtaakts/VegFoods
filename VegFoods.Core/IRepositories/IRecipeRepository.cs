@@ -14,6 +14,8 @@ namespace VegFoods.Core.IRepositories
 
         Task<Recipe> GetWithIngreById(int id);
 
+        Task<IEnumerable<Recipe>> GetAllWithIngredient();
+
     }
 }
 

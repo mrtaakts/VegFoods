@@ -40,10 +40,16 @@ namespace VegFoods.Api.Controllers
                 var ingredient = await _ingredientService.GetByIdAsync(id);
 
                 return Ok(_mapper.Map<IngredientDTO>(ingredient));
-            
-                   
-           
-         
+
+        }
+
+        [HttpPut]
+        public IActionResult Update(IngredientDTO ingredientDTO)
+
+        {
+            var ıngredient = _ingredientService.Update(_mapper.Map<Ingredient>(ingredientDTO));
+
+            return NoContent();
         }
 
         [HttpPost]

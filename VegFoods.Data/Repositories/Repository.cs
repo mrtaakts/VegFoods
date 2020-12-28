@@ -55,5 +55,12 @@ namespace VegFoods.Data.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public T Update(T entity)
+        {
+            _context.Entry(entity).State = EntityState.Modified;
+
+            return entity;
+        }
     }
 }

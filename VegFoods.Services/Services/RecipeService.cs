@@ -31,5 +31,10 @@ namespace VegFoods.Services.Services
         {
             return await _unitOfWork.Recipes.GetAllWithIngredientsAsync();
         }
+
+        public async Task<IEnumerable<Recipe>> GetAllWithIngredient()
+        {
+            return await _unitOfWork.Recipes.GetAllWithIngredient();
+        }
     }
 }

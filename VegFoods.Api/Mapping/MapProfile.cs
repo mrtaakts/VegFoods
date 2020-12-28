@@ -18,13 +18,16 @@ namespace VegFoods.Api.Mapping
 
             CreateMap<Recipe, RecipeDTO>().ReverseMap();
             CreateMap<Recipe, RecipeWithCategoryDTO>().ReverseMap();
-            CreateMap<Recipe, RecipeWithIngredientsDTO>().ReverseMap();
+          //  CreateMap<Recipe, RecipeWithIngredientsDTO>().ReverseMap();
 
 
             CreateMap<Ingredient, IngredientDTO>().ReverseMap();
 
             CreateMap<UserAddDTO, User>();
             CreateMap<User, UserAddDTO>();
+
+           CreateMap<Recipe, RecipeWithIngredientsDTO>()
+     .ForMember(dto => dto.Ingredients, opt => opt.MapFrom(x => x.RecipeIngredients.Select(y => y.Ingredient).ToList()));
         }
 
     }

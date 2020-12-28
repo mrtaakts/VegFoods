@@ -28,6 +28,15 @@ namespace VegFoods.Services.Services
             return entity;
         }
 
+        public T Update(T entity)
+        {
+            T updateEntity = _repository.Update(entity);
+
+            _unitOfWork.Commit();
+
+            return updateEntity;
+        }
+
         public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate)
         {
             return await _repository.Find(predicate);

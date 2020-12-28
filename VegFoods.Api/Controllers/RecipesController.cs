@@ -33,15 +33,35 @@ namespace VegFoods.Api.Controllers
             return Ok(_mapper.Map<IEnumerable<RecipeDTO>>(recipes));
         }
 
+        [HttpGet("/api/recipes/ingredient")]
+        public async Task<IActionResult> GetAllWithIngredient()
+        {
+
+            var recipes = await _recipeService.GetAllWithIngredientsAsync();
+
+            return Ok(_mapper.Map<IEnumerable<RecipeWithIngredientsDTO>>(recipes));
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWithIngreById(int id)
         {
 
              var recipe = await _recipeService.GetWithIngreById(id);
-
+            
+             
              return Ok(_mapper.Map<RecipeWithIngredientsDTO>(recipe));
 
             
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Updated(RecipeDTO recipeDTO)
+
+        {
+
+            var recipe = _recipeService.Update(_mapper.Map<Recipe>(recipeDTO));
+
+            return NoContent();
         }
 
         // [HttpGet("{id}")]

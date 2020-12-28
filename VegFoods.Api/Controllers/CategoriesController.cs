@@ -49,13 +49,23 @@ namespace VegFoods.Api.Controllers
             return Created(string.Empty, _mapper.Map<CategoryDTO>(newcategory));
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Remove(int id)
-        {
-            var category = _categoryService.GetByIdAsync(id).Result;
-            _categoryService.Remove(category);
-            return Ok("Kategori Başarıyla Silindi");
+           [HttpDelete("{id}")]
+            public IActionResult Remove(int id)
+            {
+                var category = _categoryService.GetByIdAsync(id).Result;
+                _categoryService.Remove(category);
+                return Ok("Kategori Başarıyla Silindi");
 
+            }
+        
+
+        [HttpPut]
+        public IActionResult Update(CategoryDTO categoryDTO)
+
+        {
+            var category = _categoryService.Update(_mapper.Map<Category>(categoryDTO));
+
+            return NoContent();
         }
 
         [HttpGet("{id}/recipes")]

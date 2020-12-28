@@ -17,10 +17,19 @@ namespace VegFoods.Data.Repositories
             _context = dbContext;
         }
 
+        public Task<IEnumerable<Recipe>> GetAllWithCategoryAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Recipe>> GetAllWithIngredient()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<Recipe>> GetAllWithIngredientsAsync()
         {
-           // return await _context.Recipes.Include(a => a.Ingredients).ToListAsync();
-           throw new NotImplementedException();
+            return await _context.Recipes.Include("RecipeIngredients.Ingredient").ToListAsync();
         }
 
 
@@ -33,17 +42,16 @@ namespace VegFoods.Data.Repositories
         public async Task<Recipe> GetWithIngreById(int Recipeid)
         {
            var deneme = await _context.Recipes
-                .Include(a => a.RecipeIngredients)
-                .ThenInclude(x => x.Ingredient)
+                .Include("RecipeIngredients.Ingredient")
                 .Where(x => x.Id == Recipeid)
                 .FirstOrDefaultAsync();
+            
+            
+            
+            
             return deneme;
         }
 
-        Task<IEnumerable<Recipe>> IRecipeRepository.GetAllWithCategoryAsync()
-        {
-            throw new NotImplementedException();
-        }
 
       
 

@@ -45,6 +45,8 @@ namespace VegFoods.Api.Controllers
             }
             else
             {
+               
+                // İYİCE BAKAYIM
 
                 User user = new User();
                 user.UserName = userLoginDTO.UserName;
@@ -52,11 +54,21 @@ namespace VegFoods.Api.Controllers
 
                 if (await _userService.CheckPassword(user))
                 {
+                    var activeuser = await _userService.FindByUserName(userLoginDTO.UserName);
                     var roles = await _userService.GetRolesByUserName(userLoginDTO.UserName);
                     var token = _jwtService.GenerateJwt(appUser, roles);
-                    JwtAccessToken jwtAccessToken = new JwtAccessToken();
-                    jwtAccessToken.Token = token;
-                    return Created("", jwtAccessToken);
+                    //  JwtAccessToken jwtAccessToken = new JwtAccessToken();
+                    // jwtAccessToken.Token = token;
+                    UserTokenDTO userTokenDTO = new UserTokenDTO
+                    {
+                        FullName = activeuser.FullName,
+                        UserName = activeuser.UserName,
+                        Roles = roles.Select(I => I.Name).ToList(),
+                        Token = token.ToString()
+                    };
+
+                   
+                    return Created("", userTokenDTO);
                 }
                 return BadRequest("kullanıcı adı veya şifre hatalı");
             }
@@ -87,7 +99,7 @@ namespace VegFoods.Api.Controllers
 
 
         [HttpGet("[action]")]
-        [Authorize]
+        
         public async Task<IActionResult> ActiveUser()
         {
             var user = await _userService.FindByUserName(User.Identity.Name);

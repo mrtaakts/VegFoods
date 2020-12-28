@@ -15,6 +15,7 @@ namespace VegFoods.Core.IRepositories
         //Task<T> SingleOrDefaultAsync(Expression<Func<T, bool>> predicate);
         Task AddAsync(T entity);
         //Task AddRangeAsync(IEnumerable<T> entities);
+        T Update(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
             

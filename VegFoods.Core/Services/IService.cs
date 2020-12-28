@@ -16,5 +16,6 @@ namespace VegFoods.Core.Services
         //Task AddRangeAsync(IEnumerable<T> entities);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
+        T Update(T entity);
     }
 }
