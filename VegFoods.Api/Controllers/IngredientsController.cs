@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VegFoods.Api.DTO;
 using VegFoods.Core.Models;
 using VegFoods.Core.Services;
+using VegFoods.Core.StringInfos;
 
 namespace VegFoods.Api.Controllers
 {
@@ -25,6 +27,7 @@ namespace VegFoods.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
 
@@ -34,6 +37,7 @@ namespace VegFoods.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        
         public async Task<IActionResult> GetById(int id)
         {
             
@@ -53,6 +57,7 @@ namespace VegFoods.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Save(IngredientDTO ıngredientDTO)
         {
             var newIngredient = await _ingredientService.AddAsync(_mapper.Map<Ingredient>(ıngredientDTO));
@@ -61,6 +66,7 @@ namespace VegFoods.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public IActionResult Remove(int id)
         {
             var ingredient = _ingredientService.GetByIdAsync(id).Result;

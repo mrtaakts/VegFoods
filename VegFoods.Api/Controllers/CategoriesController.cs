@@ -23,7 +23,7 @@ namespace VegFoods.Api.Controllers
         }
 
         [HttpGet]
-       // [Authorize(Roles = RoleInfo.Admin)]
+       //[Authorize(Roles = RoleInfo.Admin)]
         public async Task<IActionResult> GetAll()
         {
             
