@@ -12,8 +12,6 @@ namespace VegFoods.Core.Models
         public int? CategoryId { get; set; } = null; 
         public string Description { get; set; }
         public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
-
-     
         public Category? Category { get; set;}
 
         public User User { get; set; }
