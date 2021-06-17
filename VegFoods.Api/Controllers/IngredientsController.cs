@@ -27,7 +27,6 @@ namespace VegFoods.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAll()
         {
 
@@ -57,7 +56,6 @@ namespace VegFoods.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Save(IngredientDTO ıngredientDTO)
         {
             var newIngredient = await _ingredientService.AddAsync(_mapper.Map<Ingredient>(ıngredientDTO));
@@ -66,7 +64,6 @@ namespace VegFoods.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public IActionResult Remove(int id)
         {
             var ingredient = _ingredientService.GetByIdAsync(id).Result;
